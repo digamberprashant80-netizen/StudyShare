@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Browse Notes - StudyShare</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f7fb;
+
+            color: #222;
+
+        }
+
+
+        /* NAVBAR */
+
+        nav {
+
+            background: #2196f3;
+
+            color: white;
+
+            padding: 15px 7%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+        }
+
+
+        .logo {
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+        }
+
+
+        nav a {
+
+            color: white;
+
+            text-decoration: none;
+
+            margin-left: 18px;
+
+        }
+
+
+        /* MAIN */
+
+        main {
+
+            width: 90%;
+
+            max-width: 1100px;
+
+            margin: 35px auto;
+
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: #174a7e;
+
+        }
+
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #666;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        /* FILTER BOX */
+
+        .filter-box {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.08);
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .filter-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+
+        }
+
+
+        .filter-grid input,
+        .filter-grid select {
+
+            width: 100%;
+
+            padding: 11px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+        }
+
+
+        .filter-buttons {
+
+            margin-top: 15px;
+
+            display: flex;
+
+            gap: 10px;
+
+        }
+
+
+        button {
+
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+        }
+
+
+        .search-btn {
+
+            background: #2196f3;
+
+            color: white;
+
+        }
+
+
+        .clear-btn {
+
+            background: #6c757d;
+
+            color: white;
+
+        }
+
+
+        /* RESULT COUNT */
+
+        #resultCount {
+
+            margin-bottom: 20px;
+
+            font-weight: bold;
+
+            color: #555;
+
+        }
+
+
+        /* NOTES */
+
+        #notesContainer {
+
+            display: grid;
+
+            gap: 20px;
+
+        }
+
+
+        .note-card {
+
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        .note-card h2 {
+
+            margin-top: 0;
+
+            color: #174a7e;
+
+        }
+
+
+        .note-card p {
+
+            margin: 8px 0;
+
+        }
+
+
+        .buttons {
+
+            margin-top: 18px;
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .btn {
+
+            display: inline-block;
+
+            padding: 9px 14px;
+
+            border-radius: 6px;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+        }
+
+
+        .view-btn {
+
+            background: #2196f3;
+
+        }
+
+
+        .download-btn {
+
+            background: #198754;
+
+        }
+
+
+        .empty {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            color: #666;
+
+        }
+
+
+        footer {
+
+            text-align: center;
+
+            padding: 30px;
+
+            color: #777;
+
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .filter-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            nav {
+
+                flex-direction: column;
+
+                gap: 10px;
+
+            }
+
+
+            nav a {
+
+                margin: 5px;
+
+            }
+
+
+            .filter-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+            📚 StudyShare
+        </div>
+
+
+        <div>
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/upload.html">
+                Upload
+            </a>
+
+            <a href="/my-notes.html">
+                My Notes
+            </a>
+
+            <a href="/profile.html">
+                Profile
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- MAIN -->
+
+    <main>
+
+        <h1>
+            📚 Browse Notes
+        </h1>
+
+
+        <p class="subtitle">
+
+            Search and find notes shared
+            by students.
+
+        </p>
+
+
+
+        <!-- FILTERS -->
+
+        <div class="filter-box">
+
+            <div class="filter-grid">
+
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="🔎 Search notes..."
+                >
+
+
+                <select id="courseFilter">
+
+                    <option value="">
+                        All Courses / Classes
+                    </option>
+
+                </select>
+
+
+                <select id="subjectFilter">
+
+                    <option value="">
+                        All Subjects
+                    </option>
+
+                </select>
+
+
+                <select id="semesterFilter">
+
+                    <option value="">
+                        All Semesters
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter-buttons">
+
+                <button
+                    class="search-btn"
+                    onclick="applyFilters()"
+                >
+                    🔎 Search
+                </button>
+
+
+                <button
+                    class="clear-btn"
+                    onclick="clearFilters()"
+                >
+                    🔄 Clear Filters
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RESULT COUNT -->
+
+        <div id="resultCount">
+            Loading notes...
+        </div>
+
+
+
+        <!-- NOTES -->
+
+        <div id="notesContainer"></div>
+
+    </main>
+
+
+
+    <footer>
+
+        © 2026 StudyShare |
+        Share Notes, Learn Together.
+
+    </footer>
+
+
+
+    <script>
+
+        let allNotes = [];
+
+
+        /* =========================
+           ESCAPE HTML
+        ========================= */
+
+        function escapeHTML(text) {
+
+            if (
+                text === null ||
+                text === undefined
+            ) {
+
+                return "";
+
+            }
+
+
+            return String(text)
+
+                .replace(/&/g, "&amp;")
+
+                .replace(/</g, "&lt;")
+
+                .replace(/>/g, "&gt;")
+
+                .replace(/"/g, "&quot;")
+
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+
+        /* =========================
+           LOAD NOTES
+        ========================= */
+
+        async function loadNotes() {
+
+            try {
+
+                const response =
+                    await fetch("/api/notes");
+
+
+                allNotes =
+                    await response.json();
+
+
+                createFilters();
+
+                applyFilters();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                document.getElementById(
+                    "notesContainer"
+                ).innerHTML = `
+
+                    <div class="empty">
+
+                        ❌ Unable to load notes.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+
+        /* =========================
+           CREATE FILTER OPTIONS
+        ========================= */
+
+        function createFilters() {
+
+            const courses =
+                new Set();
+
+            const subjects =
+                new Set();
+
+            const semesters =
+                new Set();
+
+
+            allNotes.forEach(
+                function(note) {
+
+                    if (note.course) {
+
+                        courses.add(
+                            note.course
+                        );
+
+                    }
+
+
+                    if (note.subject) {
+
+                        subjects.add(
+                            note.subject
+                        );
+
+                    }
+
+
+                    if (note.semester) {
+
+                        semesters.add(
+                            note.semester
+                        );
+
+                    }
+
+                }
+            );
+
+
+            const courseFilter =
+                document.getElementById(
+                    "courseFilter"
+                );
+
+
+            const subjectFilter =
+                document.getElementById(
+                    "subjectFilter"
+                );
+
+
+            const semesterFilter =
+                document.getElementById(
+                    "semesterFilter"
+                );
+
+
+            [...courses]
+                .sort()
+                .forEach(
+                    function(course) {
+
+                        courseFilter.innerHTML += `
+
+                            <option value="${escapeHTML(course)}">
+
+                                ${escapeHTML(course)}
+
+                            </option>
+
+                        `;
+
+                    }
+                );
+
+
+            [...subjects]
+                .sort()
+                .forEach(
+                    function(subject) {
+
+                        subjectFilter.innerHTML += `
+
+                            <option value="${escapeHTML(subject)}">
+
+                                ${escapeHTML(subject)}
+
+                            </option>
+
+                        `;
+
+                    }
+                );
+
+
+            [...semesters]
+                .sort()
+                .forEach(
+                    function(semester) {
+
+                        semesterFilter.innerHTML += `
+
+                            <option value="${escapeHTML(semester)}">
+
+                                ${escapeHTML(semester)}
+
+                            </option>
+
+                        `;
+
+                    }
+                );
+
+        }
+
+
+
+        /* =========================
+           APPLY FILTERS
+        ========================= */
+
+        function applyFilters() {
+
+            const search =
+                document.getElementById(
+                    "searchInput"
+                )
+                .value
+                .trim()
+                .toLowerCase();
+
+
+            const course =
+                document.getElementById(
+                    "courseFilter"
+                ).value;
+
+
+            const subject =
+                document.getElementById(
+                    "subjectFilter"
+                ).value;
+
+
+            const semester =
+                document.getElementById(
+                    "semesterFilter"
+                ).value;
+
+
+            const filteredNotes =
+                allNotes.filter(
+                    function(note) {
+
+
+                        const searchableText =
+
+                            (
+                                (note.title || "") +
+                                " " +
+                                (note.course || "") +
+                                " " +
+                                (note.subject || "") +
+                                " " +
+                                (note.description || "")
+                            )
+                            .toLowerCase();
+
+
+                        const matchesSearch =
+                            !search ||
+                            searchableText.includes(
+                                search
+                            );
+
+
+                        const matchesCourse =
+                            !course ||
+                            note.course === course;
+
+
+                        const matchesSubject =
+                            !subject ||
+                            note.subject === subject;
+
+
+                        const matchesSemester =
+                            !semester ||
+                            note.semester === semester;
+
+
+                        return (
+                            matchesSearch &&
+                            matchesCourse &&
+                            matchesSubject &&
+                            matchesSemester
+                        );
+
+                    }
+                );
+
+
+            displayNotes(
+                filteredNotes
+            );
+
+        }
+
+
+
+        /* =========================
+           DISPLAY NOTES
+        ========================= */
+
+        function displayNotes(notes) {
+
+            const container =
+                document.getElementById(
+                    "notesContainer"
+                );
+
+
+            const resultCount =
+                document.getElementById(
+                    "resultCount"
+                );
+
+
+            resultCount.textContent =
+                `${notes.length} note(s) found`;
+
+
+            if (notes.length === 0) {
+
+                container.innerHTML = `
+
+                    <div class="empty">
+
+                        📭 No notes found.
+
+                        <br><br>
+
+                        Try changing your
+                        search or filters.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            container.innerHTML = "";
+
+
+            notes.forEach(
+                function(note) {
+
+
+                    const fileName =
+                        encodeURIComponent(
+                            note.fileName
+                        );
+
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "note-card";
+
+
+                    card.innerHTML = `
+
+                        <h2>
+
+                            ${escapeHTML(
+                                note.title
+                            )}
+
+                        </h2>
+
+
+                        <p>
+
+                            <strong>
+                                Course/Class:
+                            </strong>
+
+                            ${escapeHTML(
+                                note.course
+                            )}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Subject:
+                            </strong>
+
+                            ${escapeHTML(
+                                note.subject
+                            )}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Semester:
+                            </strong>
+
+                            ${escapeHTML(
+                                note.semester
+                            )}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Description:
+                            </strong>
+
+                            ${escapeHTML(
+                                note.description
+                            )}
+
+                        </p>
+
+
+                        <div class="buttons">
+
+
+                            <a
+
+                                class="btn view-btn"
+
+                                href="/uploads/${fileName}"
+
+                                target="_blank"
+
+                            >
+
+                                👁️ View
+
+                            </a>
+
+
+                            <a
+
+                                class="btn download-btn"
+
+                                href="/uploads/${fileName}"
+
+                                download
+
+                            >
+
+                                ⬇️ Download
+
+                            </a>
+
+
+                        </div>
+
+                    `;
+
+
+                    container.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        /* =========================
+           CLEAR FILTERS
+        ========================= */
+
+        function clearFilters() {
+
+            document.getElementById(
+                "searchInput"
+            ).value = "";
+
+
+            document.getElementById(
+                "courseFilter"
+            ).value = "";
+
+
+            document.getElementById(
+                "subjectFilter"
+            ).value = "";
+
+
+            document.getElementById(
+                "semesterFilter"
+            ).value = "";
+
+
+            applyFilters();
+
+        }
+
+
+
+        /* =========================
+           SEARCH WITH ENTER
+        ========================= */
+
+        document.getElementById(
+            "searchInput"
+        ).addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    applyFilters();
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================
+           START
+        ========================= */
+
+        loadNotes();
+
+    </script>
+
+
+</body>
+
+</html>

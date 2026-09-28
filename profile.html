@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - StudyShare</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        nav {
+            background: #2563eb;
+            color: white;
+            padding: 15px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 50px auto;
+        }
+
+        .profile-card {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+
+            text-align: center;
+        }
+
+        .profile-icon {
+            font-size: 70px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 25px;
+        }
+
+        .info {
+            text-align: left;
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .info p {
+            margin: 12px 0;
+            font-size: 16px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            display: block;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .home-btn {
+            background: #2563eb;
+        }
+
+        .notes-btn {
+            background: #16a34a;
+        }
+
+        .upload-btn {
+            background: #7c3aed;
+        }
+
+        .logout-btn {
+            background: #dc2626;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #777;
+        }
+
+        @media (max-width: 600px) {
+
+            nav {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            nav a {
+                margin: 0 7px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .profile-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+            📚 StudyShare
+        </div>
+
+        <div>
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/notes.html">
+                Notes
+            </a>
+
+            <a href="/upload.html">
+                Upload
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- PROFILE -->
+
+    <div class="container">
+
+        <div class="profile-card">
+
+            <div class="profile-icon">
+                👤
+            </div>
+
+            <h1>
+                My Profile
+            </h1>
+
+
+            <div
+                id="profileInfo"
+                class="loading"
+            >
+                Loading profile...
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div
+                id="profileButtons"
+                class="buttons"
+                style="display: none;"
+            >
+
+                <a
+                    href="/"
+                    class="btn home-btn"
+                >
+                    🏠 Home
+                </a>
+
+
+                <a
+                    href="/my-notes.html"
+                    class="btn notes-btn"
+                >
+                    📚 My Uploaded Notes
+                </a>
+
+
+                <a
+                    href="/upload.html"
+                    class="btn upload-btn"
+                >
+                    📤 Upload New Note
+                </a>
+
+
+                <a
+                    href="/logout"
+                    class="btn logout-btn"
+                >
+                    🚪 Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+
+        © 2026 StudyShare |
+        Share Notes. Learn Together.
+
+    </footer>
+
+
+    <script>
+
+        async function loadProfile() {
+
+            const profileInfo =
+                document.getElementById(
+                    "profileInfo"
+                );
+
+            const profileButtons =
+                document.getElementById(
+                    "profileButtons"
+                );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/user"
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!data.loggedIn) {
+
+                    window.location.href =
+                        "/login.html";
+
+                    return;
+                }
+
+
+                profileInfo.innerHTML = `
+
+                    <div class="info">
+
+                        <p>
+                            <span class="label">
+                                👤 Name:
+                            </span>
+
+                            ${escapeHTML(
+                                data.user.name
+                            )}
+                        </p>
+
+
+                        <p>
+                            <span class="label">
+                                📧 Email:
+                            </span>
+
+                            ${escapeHTML(
+                                data.user.email
+                            )}
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                profileButtons.style.display =
+                    "flex";
+
+
+            } catch (error) {
+
+                profileInfo.innerHTML = `
+
+                    <p>
+                        ❌ Unable to load profile.
+                    </p>
+
+                `;
+
+            }
+
+        }
+
+
+        function escapeHTML(text) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent =
+                text ?? "";
+
+            return div.innerHTML;
+
+        }
+
+
+        loadProfile();
+
+    </script>
+
+</body>
+</html>

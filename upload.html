@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Upload Notes - StudyShare</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background: #f4f7fb;
+
+            color: #222;
+
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+
+            background: #2196f3;
+
+            color: white;
+
+            padding: 15px 7%;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+        }
+
+
+        .logo {
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+        }
+
+
+        nav a {
+
+            color: white;
+
+            text-decoration: none;
+
+            margin-left: 20px;
+
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+
+            width: 90%;
+
+            max-width: 750px;
+
+            margin: 40px auto;
+
+        }
+
+
+        .upload-box {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.1);
+
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: #174a7e;
+
+            margin-top: 0;
+
+        }
+
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #666;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        label {
+
+            display: block;
+
+            font-weight: bold;
+
+            margin-top: 18px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+        }
+
+
+        textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            outline: none;
+
+            border-color: #2196f3;
+
+        }
+
+
+        /* =========================
+           FILE BOX
+        ========================= */
+
+        .file-box {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border: 2px dashed #2196f3;
+
+            border-radius: 10px;
+
+            background: #f8fbff;
+
+            text-align: center;
+
+        }
+
+
+        .file-box input {
+
+            border: none;
+
+            padding: 10px;
+
+            background: white;
+
+        }
+
+
+        .file-info {
+
+            margin-top: 10px;
+
+            font-size: 14px;
+
+            color: #555;
+
+        }
+
+
+        .file-rules {
+
+            margin-top: 10px;
+
+            font-size: 13px;
+
+            color: #777;
+
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .upload-btn {
+
+            width: 100%;
+
+            margin-top: 25px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #2196f3;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .upload-btn:hover {
+
+            background: #1976d2;
+
+        }
+
+
+        .upload-btn:disabled {
+
+            background: #9e9e9e;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            text-align: center;
+
+            padding: 30px;
+
+            color: #777;
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            nav {
+
+                flex-direction: column;
+
+                gap: 10px;
+
+                text-align: center;
+
+            }
+
+
+            nav a {
+
+                margin-left: 8px;
+
+                margin-right: 8px;
+
+            }
+
+
+            .upload-box {
+
+                padding: 20px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav>
+
+        <div class="logo">
+            📚 StudyShare
+        </div>
+
+
+        <div>
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/notes.html">
+                Notes
+            </a>
+
+            <a href="/my-notes.html">
+                My Notes
+            </a>
+
+            <a href="/profile.html">
+                Profile
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main>
+
+        <div class="upload-box">
+
+            <h1>
+                📤 Upload Your Notes
+            </h1>
+
+
+            <p class="subtitle">
+
+                Share your notes with other
+                students on StudyShare.
+
+            </p>
+
+
+            <form
+                id="uploadForm"
+                action="/upload"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+
+                <!-- TITLE -->
+
+                <label for="title">
+                    Note Title *
+                </label>
+
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Example: Engineering Mathematics Unit 1"
+                    required
+                >
+
+
+
+                <!-- COURSE -->
+
+                <label for="course">
+                    Course / Class *
+                </label>
+
+                <input
+                    type="text"
+                    id="course"
+                    name="course"
+                    placeholder="Example: B.Tech CSE / Class 12"
+                    required
+                >
+
+
+
+                <!-- SUBJECT -->
+
+                <label for="subject">
+                    Subject *
+                </label>
+
+                <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    placeholder="Example: Mathematics"
+                    required
+                >
+
+
+
+                <!-- SEMESTER -->
+
+                <label for="semester">
+                    Semester / Class
+                </label>
+
+                <input
+                    type="text"
+                    id="semester"
+                    name="semester"
+                    placeholder="Example: Semester 1"
+                >
+
+
+
+                <!-- DESCRIPTION -->
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Tell students what these notes contain..."
+                ></textarea>
+
+
+
+                <!-- FILE -->
+
+                <label>
+                    Select Note File *
+                </label>
+
+
+                <div class="file-box">
+
+                    <input
+                        type="file"
+                        id="noteFile"
+                        name="noteFile"
+                        accept=".pdf,.doc,.docx,.ppt,.pptx"
+                        required
+                    >
+
+
+                    <div
+                        class="file-info"
+                        id="fileInfo"
+                    >
+                        No file selected.
+                    </div>
+
+
+                    <div class="file-rules">
+
+                        Allowed:
+                        PDF, DOC, DOCX, PPT, PPTX
+                        <br>
+
+                        Maximum size:
+                        10 MB
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="upload-btn"
+                    id="uploadButton"
+                >
+                    📤 Upload Note
+                </button>
+
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+
+    <footer>
+
+        © 2026 StudyShare |
+        Share Notes, Learn Together.
+
+    </footer>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+
+        const fileInput =
+            document.getElementById(
+                "noteFile"
+            );
+
+
+        const fileInfo =
+            document.getElementById(
+                "fileInfo"
+            );
+
+
+        const uploadForm =
+            document.getElementById(
+                "uploadForm"
+            );
+
+
+        const uploadButton =
+            document.getElementById(
+                "uploadButton"
+            );
+
+
+
+        /* =========================
+           SHOW FILE INFORMATION
+        ========================= */
+
+        fileInput.addEventListener(
+            "change",
+            function () {
+
+
+                if (
+                    fileInput.files.length === 0
+                ) {
+
+                    fileInfo.textContent =
+                        "No file selected.";
+
+                    return;
+
+                }
+
+
+                const file =
+                    fileInput.files[0];
+
+
+                const sizeMB =
+                    file.size /
+                    (1024 * 1024);
+
+
+                fileInfo.textContent =
+                    "📄 " +
+                    file.name +
+                    " (" +
+                    sizeMB.toFixed(2) +
+                    " MB)";
+
+
+                /* Check size */
+
+                if (
+                    file.size >
+                    10 * 1024 * 1024
+                ) {
+
+                    fileInfo.textContent +=
+                        " ❌ File is larger than 10 MB.";
+
+                    fileInfo.style.color =
+                        "#dc3545";
+
+                    uploadButton.disabled =
+                        true;
+
+                } else {
+
+                    fileInfo.style.color =
+                        "#198754";
+
+                    uploadButton.disabled =
+                        false;
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================
+           UPLOAD BUTTON
+        ========================= */
+
+        uploadForm.addEventListener(
+            "submit",
+            function () {
+
+
+                uploadButton.disabled =
+                    true;
+
+
+                uploadButton.textContent =
+                    "⏳ Uploading...";
+
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>

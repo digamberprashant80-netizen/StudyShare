@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Uploaded Notes - StudyShare</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        nav {
+            background: #2196f3;
+            color: white;
+            padding: 15px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        main {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #174a7e;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        #notesContainer {
+            display: grid;
+            gap: 20px;
+        }
+
+        .note-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        .note-card h2 {
+            margin-top: 0;
+            color: #174a7e;
+        }
+
+        .note-card p {
+            margin: 8px 0;
+        }
+
+        .buttons {
+            margin-top: 18px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button,
+        .btn {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 7px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+        }
+
+        .view-btn {
+            background: #2196f3;
+        }
+
+        .download-btn {
+            background: #28a745;
+        }
+
+        .edit-btn {
+            background: #ff9800;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+        }
+
+        .edit-form {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .edit-form input,
+        .edit-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 7px 0 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .edit-form textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .save-btn {
+            background: #198754;
+        }
+
+        .cancel-btn {
+            background: #6c757d;
+        }
+
+        .message {
+            text-align: center;
+            padding: 20px;
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">📚 StudyShare</div>
+
+        <div>
+            <a href="/">Home</a>
+            <a href="/notes.html">Notes</a>
+            <a href="/profile.html">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+
+    <main>
+
+        <h1>📚 My Uploaded Notes</h1>
+
+        <p class="subtitle">
+            Manage the notes you have uploaded.
+        </p>
+
+        <div id="notesContainer">
+            <div class="message">
+                Loading your notes...
+            </div>
+        </div>
+
+    </main>
+
+
+    <footer>
+        © 2026 StudyShare | Share Notes, Learn Together.
+    </footer>
+
+
+    <script>
+
+        let myNotes = [];
+
+
+        function escapeHTML(text) {
+
+            if (text === null || text === undefined) {
+                return "";
+            }
+
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+
+        async function loadMyNotes() {
+
+            const container =
+                document.getElementById("notesContainer");
+
+            try {
+
+                const response =
+                    await fetch("/api/my-notes");
+
+                if (response.status === 401) {
+
+                    window.location.href = "/login.html";
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.error || "Unable to load notes."
+                    );
+                }
+
+                myNotes = data;
+
+                displayNotes();
+
+            } catch (error) {
+
+                console.error(error);
+
+                container.innerHTML = `
+                    <div class="message">
+                        ❌ Unable to load your notes.
+                        <br><br>
+                        ${escapeHTML(error.message)}
+                        <br><br>
+                        <button
+                            class="view-btn"
+                            onclick="loadMyNotes()">
+                            🔄 Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+
+        function displayNotes() {
+
+            const container =
+                document.getElementById("notesContainer");
+
+
+            if (myNotes.length === 0) {
+
+                container.innerHTML = `
+                    <div class="message">
+                        📭 You have not uploaded any notes yet.
+                        <br><br>
+                        <a
+                            href="/upload.html"
+                            class="btn view-btn">
+                            📤 Upload a Note
+                        </a>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            container.innerHTML = "";
+
+
+            myNotes.forEach(function(note, index) {
+
+                const encodedFileName =
+                    encodeURIComponent(note.fileName);
+
+
+                const uploadDate =
+                    note.uploadDate
+                        ? new Date(note.uploadDate).toLocaleString()
+                        : "Unknown";
+
+
+                const card = document.createElement("div");
+
+                card.className = "note-card";
+
+
+                card.innerHTML = `
+
+                    <h2>
+                        ${escapeHTML(note.title)}
+                    </h2>
+
+                    <p>
+                        <strong>Course:</strong>
+                        ${escapeHTML(note.course)}
+                    </p>
+
+                    <p>
+                        <strong>Subject:</strong>
+                        ${escapeHTML(note.subject)}
+                    </p>
+
+                    <p>
+                        <strong>Semester:</strong>
+                        ${escapeHTML(note.semester)}
+                    </p>
+
+                    <p>
+                        <strong>Description:</strong>
+                        ${escapeHTML(note.description)}
+                    </p>
+
+                    <p>
+                        <strong>Uploaded:</strong>
+                        ${escapeHTML(uploadDate)}
+                    </p>
+
+
+                    <div class="buttons">
+
+                        <a
+                            class="btn view-btn"
+                            href="/uploads/${encodedFileName}"
+                            target="_blank">
+                            👁️ View
+                        </a>
+
+
+                        <a
+                            class="btn download-btn"
+                            href="/uploads/${encodedFileName}"
+                            download>
+                            ⬇️ Download
+                        </a>
+
+
+                        <button
+                            class="edit-btn"
+                            onclick="showEditForm(${index})">
+                            ✏️ Edit
+                        </button>
+
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteNote('${encodedFileName}')">
+                            🗑️ Delete
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="editForm-${index}"
+                        class="edit-form">
+
+                        <h3>✏️ Edit Note</h3>
+
+
+                        <label>Title</label>
+
+                        <input
+                            id="title-${index}"
+                            value="${escapeHTML(note.title)}">
+
+
+                        <label>Course</label>
+
+                        <input
+                            id="course-${index}"
+                            value="${escapeHTML(note.course)}">
+
+
+                        <label>Subject</label>
+
+                        <input
+                            id="subject-${index}"
+                            value="${escapeHTML(note.subject)}">
+
+
+                        <label>Semester</label>
+
+                        <input
+                            id="semester-${index}"
+                            value="${escapeHTML(note.semester)}">
+
+
+                        <label>Description</label>
+
+                        <textarea
+                            id="description-${index}">${escapeHTML(note.description)}</textarea>
+
+
+                        <button
+                            class="save-btn"
+                            onclick="saveEdit(${index}, '${encodedFileName}')">
+                            💾 Save Changes
+                        </button>
+
+
+                        <button
+                            class="cancel-btn"
+                            onclick="cancelEdit(${index})">
+                            Cancel
+                        </button>
+
+                    </div>
+                `;
+
+
+                container.appendChild(card);
+
+            });
+
+        }
+
+
+        function showEditForm(index) {
+
+            document.getElementById(
+                "editForm-" + index
+            ).style.display = "block";
+
+        }
+
+
+        function cancelEdit(index) {
+
+            document.getElementById(
+                "editForm-" + index
+            ).style.display = "none";
+
+        }
+
+
+        async function saveEdit(index, encodedFileName) {
+
+            const fileName =
+                decodeURIComponent(encodedFileName);
+
+
+            const title =
+                document.getElementById(
+                    "title-" + index
+                ).value.trim();
+
+
+            const course =
+                document.getElementById(
+                    "course-" + index
+                ).value.trim();
+
+
+            const subject =
+                document.getElementById(
+                    "subject-" + index
+                ).value.trim();
+
+
+            const semester =
+                document.getElementById(
+                    "semester-" + index
+                ).value.trim();
+
+
+            const description =
+                document.getElementById(
+                    "description-" + index
+                ).value.trim();
+
+
+            if (!title) {
+
+                alert("Please enter a title.");
+
+                return;
+            }
+
+
+            const formData = new URLSearchParams();
+
+            formData.append("fileName", fileName);
+            formData.append("title", title);
+            formData.append("course", course);
+            formData.append("subject", subject);
+            formData.append("semester", semester);
+            formData.append("description", description);
+
+
+            try {
+
+                const response =
+                    await fetch("/api/edit-note", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/x-www-form-urlencoded"
+                        },
+
+                        body: formData.toString()
+
+                    });
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    alert(
+                        "❌ " +
+                        (data.error ||
+                            "Unable to update note.")
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    "✅ Note updated successfully!"
+                );
+
+
+                loadMyNotes();
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "❌ Something went wrong."
+                );
+
+            }
+
+        }
+
+
+        async function deleteNote(encodedFileName) {
+
+            const fileName =
+                decodeURIComponent(encodedFileName);
+
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete this note?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            const formData =
+                new URLSearchParams();
+
+            formData.append(
+                "fileName",
+                fileName
+            );
+
+
+            try {
+
+                const response =
+                    await fetch("/api/delete-note", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/x-www-form-urlencoded"
+                        },
+
+                        body: formData.toString()
+
+                    });
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    alert(
+                        "❌ " +
+                        (data.error ||
+                            "Unable to delete note.")
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    "✅ Note deleted successfully!"
+                );
+
+
+                loadMyNotes();
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "❌ Something went wrong."
+                );
+
+            }
+
+        }
+
+
+        loadMyNotes();
+
+    </script>
+
+</body>
+</html>

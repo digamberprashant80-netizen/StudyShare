@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyShare - Share Notes. Learn Together.</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f5f7fb;
+            color: #222;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+            background: #2563eb;
+            color: white;
+
+            padding: 15px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+
+        .nav-buttons a {
+            text-decoration: none;
+            padding: 9px 15px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+
+        .login-btn {
+            background: white;
+            color: #2563eb;
+        }
+
+
+        .signup-btn {
+            background: #16a34a;
+            color: white;
+        }
+
+
+        .profile-btn {
+            background: white;
+            color: #2563eb;
+        }
+
+
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+
+        .welcome {
+            font-weight: bold;
+            color: white;
+        }
+
+
+        /* =========================
+           HERO SECTION
+        ========================= */
+
+        .hero {
+            text-align: center;
+
+            padding: 80px 20px 50px;
+        }
+
+
+        .hero h1 {
+            font-size: 45px;
+            color: #2563eb;
+
+            margin-bottom: 15px;
+        }
+
+
+        .hero p {
+            font-size: 19px;
+            color: #555;
+
+            margin-bottom: 10px;
+        }
+
+
+        .creator {
+            font-size: 15px;
+            color: #777;
+
+            margin-top: 15px;
+        }
+
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-section {
+            text-align: center;
+
+            padding: 20px;
+        }
+
+
+        .search-box {
+            width: 80%;
+            max-width: 600px;
+
+            padding: 15px;
+
+            border: 1px solid #ccc;
+            border-radius: 8px;
+
+            font-size: 16px;
+        }
+
+
+        .search-btn {
+            margin-top: 10px;
+
+            padding: 12px 25px;
+
+            background: #2563eb;
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            font-weight: bold;
+        }
+
+
+        .search-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* =========================
+           CATEGORIES
+        ========================= */
+
+        .categories {
+            padding: 40px 20px;
+
+            text-align: center;
+        }
+
+
+        .categories h2 {
+            margin-bottom: 25px;
+        }
+
+
+        .category-container {
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 15px;
+        }
+
+
+        .category {
+            background: white;
+
+            padding: 18px 25px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.08);
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+
+        .category:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.12);
+        }
+
+
+        /* =========================
+           UPLOAD BUTTON
+        ========================= */
+
+        .upload-section {
+            text-align: center;
+
+            padding: 30px;
+        }
+
+
+        .upload-btn {
+            display: inline-block;
+
+            padding: 15px 25px;
+
+            background: #16a34a;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            font-size: 17px;
+        }
+
+
+        .upload-btn:hover {
+            background: #15803d;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            margin-top: 50px;
+
+            background: #1e293b;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 20px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            nav {
+                padding: 15px;
+            }
+
+
+            .logo {
+                font-size: 19px;
+            }
+
+
+            .hero {
+                padding-top: 50px;
+            }
+
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+
+            .hero p {
+                font-size: 16px;
+            }
+
+
+            .search-box {
+                width: 95%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav>
+
+        <div class="logo">
+            📚 StudyShare
+        </div>
+
+
+        <div
+            class="nav-buttons"
+            id="navButtons"
+        >
+
+            <!-- JavaScript will add buttons here -->
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <section class="hero">
+
+        <h1>
+            Share Notes. Learn Together.
+        </h1>
+
+
+        <p>
+            Find, share and learn from notes created by students.
+        </p>
+
+
+        <p class="creator">
+            Created by Digamber & Vanshaj
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================
+         SEARCH
+    ========================= -->
+
+    <section class="search-section">
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search-box"
+            placeholder="Search notes, subjects, courses..."
+        >
+
+
+        <br>
+
+
+        <button
+            class="search-btn"
+            onclick="searchNotes()"
+        >
+            🔍 Search Notes
+        </button>
+
+    </section>
+
+
+
+    <!-- =========================
+         CATEGORIES
+    ========================= -->
+
+    <section class="categories">
+
+        <h2>
+            📚 Browse Categories
+        </h2>
+
+
+        <div class="category-container">
+
+
+            <div
+                class="category"
+                onclick="searchCategory('Class 9')"
+            >
+                Class 9
+            </div>
+
+
+            <div
+                class="category"
+                onclick="searchCategory('Class 10')"
+            >
+                Class 10
+            </div>
+
+
+            <div
+                class="category"
+                onclick="searchCategory('Class 11')"
+            >
+                Class 11
+            </div>
+
+
+            <div
+                class="category"
+                onclick="searchCategory('Class 12')"
+            >
+                Class 12
+            </div>
+
+
+            <div
+                class="category"
+                onclick="searchCategory('B.Tech')"
+            >
+                B.Tech
+            </div>
+
+
+            <div
+                class="category"
+                onclick="searchCategory('BCA')"
+            >
+                BCA
+            </div>
+
+
+            <div
+                class="category"
+                onclick="searchCategory('Graduation')"
+            >
+                Graduation
+            </div>
+
+
+            <div
+                class="category"
+                onclick="searchCategory('Post-Graduation')"
+            >
+                Post-Graduation
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         UPLOAD
+    ========================= -->
+
+    <section class="upload-section">
+
+        <a
+            href="/upload.html"
+            class="upload-btn"
+        >
+            📤 Upload Notes
+        </a>
+
+    </section>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <p>
+            © 2026 StudyShare
+        </p>
+
+        <p>
+            Share Knowledge. Help Students. 📚
+        </p>
+
+    </footer>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+
+        // =========================
+        // SEARCH NOTES
+        // =========================
+
+        function searchNotes() {
+
+            const search =
+                document
+                    .getElementById("searchInput")
+                    .value
+                    .trim();
+
+
+            if (search === "") {
+
+                alert(
+                    "Please enter something to search."
+                );
+
+                return;
+            }
+
+
+            window.location.href =
+                "notes.html?search=" +
+                encodeURIComponent(search);
+
+        }
+
+
+
+        // =========================
+        // CATEGORY SEARCH
+        // =========================
+
+        function searchCategory(category) {
+
+            window.location.href =
+                "notes.html?search=" +
+                encodeURIComponent(category);
+
+        }
+
+
+
+        // =========================
+        // HTML SECURITY
+        // =========================
+
+        function escapeHTML(text) {
+
+            const div =
+                document.createElement("div");
+
+
+            div.textContent = text;
+
+
+            return div.innerHTML;
+
+        }
+
+
+
+        // =========================
+        // CHECK LOGIN
+        // =========================
+
+        async function checkUser() {
+
+            try {
+
+                const response =
+                    await fetch("/api/user");
+
+
+                const data =
+                    await response.json();
+
+
+                const navButtons =
+                    document.getElementById(
+                        "navButtons"
+                    );
+
+
+                // =========================
+                // LOGGED IN
+                // =========================
+
+                if (data.loggedIn) {
+
+                    navButtons.innerHTML = `
+
+                        <span class="welcome">
+
+                            👋 Welcome,
+                            ${escapeHTML(data.user.name)}
+
+                        </span>
+
+
+                        <a
+                            href="/profile.html"
+                            class="profile-btn"
+                        >
+                            👤 My Profile
+                        </a>
+
+
+                        <a
+                            href="/logout"
+                            class="logout-btn"
+                        >
+                            Logout
+                        </a>
+
+                    `;
+
+                }
+
+
+                // =========================
+                // NOT LOGGED IN
+                // =========================
+
+                else {
+
+                    navButtons.innerHTML = `
+
+                        <a
+                            href="/login.html"
+                            class="login-btn"
+                        >
+                            Login
+                        </a>
+
+
+                        <a
+                            href="/signup.html"
+                            class="signup-btn"
+                        >
+                            Sign Up
+                        </a>
+
+                    `;
+
+                }
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "User check failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        // =========================
+        // RUN WHEN PAGE LOADS
+        // =========================
+
+        checkUser();
+
+
+    </script>
+
+
+</body>
+
+</html>
