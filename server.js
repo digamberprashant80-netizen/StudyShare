@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 
 // ===============================
